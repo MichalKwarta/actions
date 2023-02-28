@@ -19,7 +19,9 @@ module.exports = async ({ github,context,core}:args) => {
       }
       core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
       try {
-        const result = await github.rest.pulls.get(request)
+          const result = await github.rest.pulls.get(request)
+          console.log(result.data)
+          
         return result.data
       } catch (err) {
         core.setFailed(`Request failed with error ${err}`)
