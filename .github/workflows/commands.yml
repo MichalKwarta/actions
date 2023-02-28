@@ -69,10 +69,6 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '👋 Hey, test job passed!'
-            })
+            const script = require('../scripts/dist/commentPR.js')
+            await script({github, context, core})
       
