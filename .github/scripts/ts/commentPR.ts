@@ -8,15 +8,14 @@ type args = {
     github: ReturnType<typeof getOctokit>,
     context: Context,
     core: any
-    extra: any
 }
-module.exports = async ({ github,context,core ,extra}:args) => {
+module.exports = async ({ github,context,core}:args) => {
 
     github.rest.issues.createComment({
         issue_number: context.issue.number,
         owner: context.repo.owner,
         repo: context.repo.repo,
-        body: extra
+        body: process.env['body']
     })
 
 }

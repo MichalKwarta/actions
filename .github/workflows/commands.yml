@@ -58,18 +58,22 @@ jobs:
       - name: report test result if failed
         if: failure()
         uses: actions/github-script@v6
+        env:
+            body: "👋 Hey, test job failed! :("
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const script = require('.github/scripts/dist/commentPR.js')
-            await script({github, context, core,extra:"👋 Hey, test job failed"})
+            await script({github, context, core})
             
       - name: report test result if success
         if: success()
         uses: actions/github-script@v6
+        env:
+            body: "👋 Hey, test job successfully completed!"
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const script = require('.github/scripts/dist/commentPR.js')
-            await script({github, context, core,extra:"👋 Hey, test job successfully completed!"})
+            await script({github, context, core})
       
