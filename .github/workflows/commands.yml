@@ -5,12 +5,14 @@ on:
 
 jobs:
   pr_commented:
+    permissions: write-all
+
     # This job only runs for pull request comments
-    name: PR comment
+    name: test
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
-    runs-on: [self-hosted, linux]
+    runs-on: ubuntu-latest
     steps:
-      - uses: CloudTribe/actions/github-script/v3@scc
+      - uses: actions/github-script@v3
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -18,23 +20,55 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '👋 Thanks for reporting!'
+              body: '👋 Hey, test job was triggered!'
             })
-  pr_commented2:
-    # This job only runs for pull request comments
-    name: PR comment2
-    if: ${{ github.event.issue.pull_request }}
-    runs-on: [self-hosted, linux]
+      - uses: actions/github-script@v3
+        id: get-pr
+        with:
+          script: |
+            const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+            try {
+              const result = await github.pulls.get(request)
+              return result.data
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
+      - uses: actions/checkout@v2
+        with:
+          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
+     
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install pipenv
+        run: pip install pipenv
 
-    steps:
-      - run: |
-          echo A comment on PR $NUMBER
-        env:
-          NUMBER: ${{ github.event.issue.number }}
-
-  cantbesimplier:
-   runs-on: [self-hosted, linux]
-   name: pleasework
-   if: contains(github.event.comment.body, '/test')  # check the comment if it contains the keywords
-   steps:
-    - run: echo test
+      - name: Run tests
+        run: |
+          pipenv install --dev
+          pipenv run pytest
+      - name: report test result if failed
+        if: failure()
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const script = require('../scripts/dist/commentPR.js')
+            await script({github, context, core})
+            
+      - name: report test result if success
+        if: success()
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const script = require('../scripts/dist/commentPR.js')
+            await script({github, context, core})
+      
