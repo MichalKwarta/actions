@@ -5,6 +5,8 @@ on:
 
 jobs:
   pr_commented:
+    permissions: write-all
+
     # This job only runs for pull request comments
     name: test
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
