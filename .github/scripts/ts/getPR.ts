@@ -4,7 +4,7 @@ import { context, getOctokit } from '@actions/github'
 import { GitHub } from '@actions/github/lib/utils';
 import { Octokit } from "@octokit/rest";
 import { Context } from "@actions/github/lib/context";
-import core from '@actions/core'
+import * as core from '@actions/core'
 
 
 type args = {

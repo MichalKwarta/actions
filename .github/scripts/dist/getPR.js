@@ -9,7 +9,7 @@ module.exports = async ({ github, context, core }) => {
     core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`);
     try {
         const result = await github.rest.pulls.get(request);
-        return result.data;
+        core.setOutput('result', result.data);
     }
     catch (err) {
         core.setFailed(`Request failed with error ${err}`);
