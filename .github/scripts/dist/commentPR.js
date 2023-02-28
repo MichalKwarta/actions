@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 module.exports = async ({ github, context, core }) => {
     github.rest.issues.createComment({
         issue_number: context.issue.number,
