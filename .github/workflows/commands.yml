@@ -8,7 +8,7 @@ jobs:
     # This job only runs for pull request comments
     name: PR comment
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
-    runs-on: [self-hosted, linux]
+    runs-on: ubuntu-latest
     steps:
       - uses: CloudTribe/actions/github-script/v3@scc
         with:
@@ -24,8 +24,8 @@ jobs:
     # This job only runs for pull request comments
     name: PR comment2
     if: ${{ github.event.issue.pull_request }}
-    runs-on: [self-hosted, linux]
 
+    runs-on: ubuntu-latest
     steps:
       - run: |
           echo A comment on PR $NUMBER
@@ -33,8 +33,9 @@ jobs:
           NUMBER: ${{ github.event.issue.number }}
 
   cantbesimplier:
-   runs-on: [self-hosted, linux]
-   name: pleasework
-   if: contains(github.event.comment.body, '/test')  # check the comment if it contains the keywords
-   steps:
-    - run: echo test
+  
+    runs-on: ubuntu-latest
+    name: pleasework
+    if: contains(github.event.comment.body, '/test')  # check the comment if it contains the keywords
+    steps:
+      - run: echo test
