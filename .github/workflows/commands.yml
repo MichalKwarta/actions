@@ -10,9 +10,17 @@ jobs:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: ls
-        run: ls
+      - name: Get Branch name
+        id: branchName
+        run: |
+          echo ::set-output name=branch::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
+        env:
+          PR_COMMENT: ${{ github.event.comment.body }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with: 
+          ref: ${{ steps.branchName.outputs.branch }}
+     
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
