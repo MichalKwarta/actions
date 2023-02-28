@@ -5,13 +5,13 @@ import { Context } from "@actions/github/lib/context";
 
 
 type args = {
-    github: ReturnType<typeof getOctokit>["rest"],
+    github: ReturnType<typeof getOctokit>,
     context: Context,
     core:any
 }
 module.exports = async ({ github,context,core }:args) => {
 
-    github.issues.createComment({
+    github.rest.issues.createComment({
         issue_number: context.issue.number,
         owner: context.repo.owner,
         repo: context.repo.repo,
