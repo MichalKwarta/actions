@@ -1,0 +1,40 @@
+name: Commands
+on: 
+  issue_comment:
+      types: [created, edited, deleted]
+
+jobs:
+  pr_commented:
+    # This job only runs for pull request comments
+    name: PR comment
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+    runs-on: [self-hosted, linux]
+    steps:
+      - uses: CloudTribe/actions/github-script/v3@scc
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for reporting!'
+            })
+  pr_commented2:
+    # This job only runs for pull request comments
+    name: PR comment2
+    if: ${{ github.event.issue.pull_request }}
+    runs-on: [self-hosted, linux]
+
+    steps:
+      - run: |
+          echo A comment on PR $NUMBER
+        env:
+          NUMBER: ${{ github.event.issue.number }}
+
+  cantbesimplier:
+   runs-on: [self-hosted, linux]
+   name: pleasework
+   if: contains(github.event.comment.body, '/test')  # check the comment if it contains the keywords
+   steps:
+    - run: echo test
