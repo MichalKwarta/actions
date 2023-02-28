@@ -62,7 +62,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const script = require('.github/scripts/dist/commentPR.js')
-            await script({github, context, core,"👋 Hey, test job failed :("})
+            await script({github, context, core,extra:"👋 Hey, test job failed"})
             
       - name: report test result if success
         if: success()
@@ -71,5 +71,5 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const script = require('.github/scripts/dist/commentPR.js')
-            await script({github, context, core,"👋 Hey, test job successfully completed!"})
+            await script({github, context, core,extra:"👋 Hey, test job successfully completed!"})
       
