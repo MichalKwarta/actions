@@ -23,11 +23,6 @@ jobs:
             const script = require('.github/scripts/dist/commentPR.js')
             await script({github, context, core})
 
-      - name: echo
-        run : echo ${{ steps.get-pr.outputs.result }}
-      
-      - name: echo
-        run : echo ${{ steps.get-pr.outputs.result }}
          
       - uses: actions/github-script@v6
         id: get-pr
@@ -35,6 +30,9 @@ jobs:
           script: |
             const script = require('.github/scripts/dist/getPR.js')
             await script({github, context, core})
+      
+      - name: echo
+        run : echo ${{ steps.get-pr.outputs.result }}
 
       - uses: actions/checkout@v3
         with:
