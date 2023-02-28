@@ -5,6 +5,6 @@ module.exports = async ({ github, context, core }) => {
         issue_number: context.issue.number,
         owner: context.repo.owner,
         repo: context.repo.repo,
-        body: '👋 Hey, test job failed!'
+        body: process.env['body']
     });
 };
