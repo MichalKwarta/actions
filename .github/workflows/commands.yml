@@ -31,8 +31,6 @@ jobs:
             const script = require('.github/scripts/dist/getPR.js')
             const tmp = await script({github, context, core})
             console.log(tmp)
-            core.info(tmp)
-            console.log('just checking if clg works')
             return tmp
       
       - name: echo
