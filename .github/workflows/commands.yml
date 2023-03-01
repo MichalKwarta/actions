@@ -29,7 +29,6 @@ jobs:
           script: |
             const script = require('.github/scripts/dist/getPR.js')
             const tmp = await script({github, context, core})
-            console.log(tmp)
             return tmp
       
       - uses: actions/checkout@v3
