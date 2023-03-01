@@ -12,8 +12,13 @@ jobs:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
 
+      - run: ls
+
+        
+      - uses: actions/checkout@v3
+      
+      - run: ls  
       - uses: actions/github-script@v6
         with:
           message: "👋 Hey, test job was triggered!"
@@ -36,6 +41,7 @@ jobs:
           repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
 
+      - run: ls 
       # - uses: actions/setup-python@v4
       #   with:
       #     python-version: '3.10'
