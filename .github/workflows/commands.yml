@@ -26,20 +26,10 @@ jobs:
           script: |
             const script = require('.github/scripts/dist/commentPR.js')
             await script({github, context, core})
-
+     
          
-      - uses: actions/github-script@v6
-        id: get-pr
-        with:
-          script: |
-            const script = require('.github/scripts/dist/getPR.js')
-            const tmp = await script({github, context, core})
-            return tmp
-      
-      - uses: actions/checkout@v3
-        with:
-          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
-          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
+      - uses: MichalKwarta/external-action@v1
+        
 
       - run: ls 
       # - uses: actions/setup-python@v4
