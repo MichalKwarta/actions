@@ -29,7 +29,8 @@ jobs:
         with:
           script: |
             const script = require('.github/scripts/dist/getPR.js')
-            await script({github, context, core})
+            const tmp = await script({github, context, core})
+            return tmp
       
       - name: echo
         run : echo ${{ steps.get-pr.outputs.result }}
