@@ -33,9 +33,6 @@ jobs:
             console.log(tmp)
             return tmp
       
-      - name: echo
-        run : echo ${{ steps.get-pr.outputs.result }}
-
       - uses: actions/checkout@v3
         with:
           repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
