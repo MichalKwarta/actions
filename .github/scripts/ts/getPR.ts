@@ -10,7 +10,7 @@ type args = {
     context: Context,
     core: typeof core
 }
-module.exports = async ({ github,context,core}:args) => {
+module.exports = async ({ github, context, core }: args) => {
     const request = {
         owner: context.repo.owner,
         repo: context.repo.repo,
