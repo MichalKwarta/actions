@@ -1,0 +1,8 @@
+{
+  "event": {
+    "action": "created",
+    "comment": {
+      "body": "/test"
+    }
+  }
+}
