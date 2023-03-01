@@ -15,26 +15,27 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: actions/github-script@v6
-        env:
-          body: "👋 Hey, test job was triggered!"
         with:
+          message: "👋 Hey, test job was triggered!"
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const script = require('.github/scripts/dist/commentPR.js')
             await script({github, context, core})
+
          
       - uses: actions/github-script@v6
         id: get-pr
         with:
           script: |
             const script = require('.github/scripts/dist/getPR.js')
-            await script({github, context, core})
+            const tmp = await script({github, context, core})
+            return tmp
+      
       - uses: actions/checkout@v3
         with:
           repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
-      - name: ls
-        run: ls -a
+
       # - uses: actions/setup-python@v4
       #   with:
       #     python-version: '3.10'
@@ -49,10 +50,9 @@ jobs:
       - name: report test result if failed
         if: failure()
         uses: actions/github-script@v6
-        env:
-            body: "👋 Hey, test job failed! :("
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
+          message: "👋 Hey, test job failed! :("
           script: |
             const script = require('.github/scripts/dist/commentPR.js')
             await script({github, context, core})
@@ -60,9 +60,8 @@ jobs:
       - name: report test result if success
         if: success()
         uses: actions/github-script@v6
-        env:
-            body: "👋 Hey, test job successfully completed!"
         with:
+          message: "👋 Hey, test job successfully completed!"
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const script = require('.github/scripts/dist/commentPR.js')

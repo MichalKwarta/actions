@@ -5,6 +5,6 @@ module.exports = async ({ github, context, core }) => {
         issue_number: context.issue.number,
         owner: context.repo.owner,
         repo: context.repo.repo,
-        body: process.env['body']
+        body: core.getInput('message', { required: true })
     });
 };
