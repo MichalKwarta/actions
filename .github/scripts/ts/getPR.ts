@@ -1,8 +1,6 @@
 
 
-import { context, getOctokit } from '@actions/github'
-import { GitHub } from '@actions/github/lib/utils';
-import { Octokit } from "@octokit/rest";
+import {  getOctokit } from '@actions/github'
 import { Context } from "@actions/github/lib/context";
 import * as core from '@actions/core'
 
@@ -24,7 +22,7 @@ module.exports = async ({ github,context,core}:args) => {
           return result.data
           
       } catch (err) { 
-        core.setFailed(`Request failed with error ${err}`)
+          core.setFailed(`Request failed with error ${err}`)
       }
     
 

@@ -40,8 +40,7 @@ jobs:
         with:
           repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.sha }} # or .head.ref for branch name
-      - name: ls
-        run: ls -a
+
       # - uses: actions/setup-python@v4
       #   with:
       #     python-version: '3.10'
